@@ -79,7 +79,7 @@ PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
 
 
-when you have installed all the necessary android sDKk parts it is time to create the emulator.
+when you have installed all the necessary android sDK parts it is time to create the emulator.
 
 ./android list targets
 will give you a list of possible android targets.
@@ -96,6 +96,241 @@ Start emulator (will be done from GruntFile):
 (for gruntfile we need a list of names of the emulators we run [naming convention: official release names matching API level])
 
 emulator -avd kitkat -no-skin -no-audio -no-window
+
+
+while installing the android SDK, be sure to install the android command globally so the emulator can be started anywhere. 
+If you don't want to do this, be sure to make the according changes to the path in the Grunfile which is launching your emulator for you.
+
+
+So lets create the hello world with testing with cordova. Right now I'm just creating it for Android, but iOs can be brought in also.
+
+cordova create com.hello.world helloWorld
+cordova add platform android
+
+
+
+Now we have a project with a structure like this:
+
+platforms
+plugins 
+www 
+randomfiles
+
+
+so, to get the testing running we add the package.json and Gruntfile.js to the root of the project.
+
+After the package.json has been created to have the project name, developer and devdependencies it is time to install the minimun
+amount of dependencies we need, in our case that being 
+
+  "devDependencies": {
+    "chai": "^2.0.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-mocha-phantomjs": "^0.6.0",
+    "grunt-mocha-appium": "^0.4.0"
+  }
+  
+  
+  so the full package.json should look something like this
+
+
+{
+  "name": "Basilicom tests",
+  "version": "0.1.0",
+  "description": "Testing made easy and useful",
+
+  "devDependencies": {
+    "chai": "^2.0.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-mocha-phantomjs": "^0.6.0",
+    "grunt-mocha-appium": "^0.4.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "author": "Susanna Huhtanen, Basilicom gmbh",
+  "license": "MIT"
+}
+
+
+in the scripts section the run command for the tests is defined. For future implementations this can be what Travis or TEamcity will use.
+
+
+now over to the Gruntfile.js. If you are new to Grunt, go over to ... to get a better overview, but basically we bneed to initialize
+the grunt setup, tell the different tasks what to do
+
+As first, we need to form a link between the Gruntfile and the package.json
+then we need to tell the jshint, where the javascript files for this project are found
+
+
+With appium we get a bit trickier setup. And the Appium documentation does not actually help at this point. 
+
+the firs batch of setting up the Appium is the options
+
+    // Mocha options
+                reporter: 'spec',
+                timeout: 6000,
+                // Toggles wd's promises API, default:false
+                usePromises: true,
+                useChaining: true
+            },
+            
+            
+the timeout is the general set timeout for things to timeout sou you would not get stuck into a faulty test forever.
+The problem being thought that the timeout can be later set to various lengths. THe timeouts in Appium tests work in 3 different onion like 
+layers, so keeping track of which timeout is applied to your different tests at different points is important. HERE BE more of the different 
+timeour layers. The uses promising feature of appium I haven't got working yet to my complemete puzzlement, so just leave it there and wait 
+for an update for this blogpost when I have figured it out.
+
+the next steps are the platform dependent settins. So iOs would be added in the same manner as Android
+
+android: {
+                src: ['spec/test.*.js'],
+                options: {
+                    deviceName: "Android",
+                    platformName: "android",
+                    platformVersion: "19",
+                    app: __dirname + "/platforms/android/ant-build/CordovaApp-debug.apk",
+                    host: "localhost",
+                    emulator: true,
+                    port: 4444
+                }
+            }
+
+
+so the important parts are the scr, where your tests are and in the app, the location for the actual application built by cordova build
+android. So the full Gruntfile would look something like this.
+
+
+
+module.exports = function(grunt) {
+
+    // Project configuration.
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        jshint: { all: ['src/*.js'] },
+        mocha_phantomjs: {
+            options: {
+                'reporter': 'spec',
+                'output': 'tests/results/result.xml',
+                urls: [
+                    'http://localhost:8000/spec/runner.html'
+                ]
+            },
+            all:{
+                options:{
+                    urls: ['http://localhost:8000/spec/runner.html']}}
+        },
+        connect: {
+            server: {
+                options: {
+                    port: 8000,
+                    base: '.'
+                }
+            }
+        },
+        mochaAppium: {
+            options: {
+                // Mocha options
+                reporter: 'spec',
+                timeout: 6000,
+                // Toggles wd's promises API, default:false
+                usePromises: true,
+                useChaining: true
+            },
+            android: {
+                src: ['spec/test.*.js'],
+                options: {
+                    deviceName: "Android",
+                    //browserName: "selendroid",
+                    //automationName: "selendroid",
+                    platformName: "android",
+                    platformVersion: "19",
+                    //aut: "com.mcrm.eydevmcrm:1.0.0",
+                    app: __dirname + "/platforms/android/ant-build/CordovaApp-debug.apk",
+                    //aut: "com.htc.club:1.7.2",
+                    host: "localhost",
+                    emulator: true,
+                    port: 4444
+                }
+            }
+        }/*  ,
+      bgShell: {
+            command: {
+                bg: true,
+                execOpts: {
+                    maxBuffer: false
+                },
+                cmd: 'emulator -avd kitkat'
+            }
+        }*/
+    });
+
+    //open emulator before doing any tests
+    //emulator -avd kitkat -no-skin -no-audio -no-window
+
+
+//make sure that all the necessary tasks are also defined in
+//the dependencies in package.json
+    //grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-bg-shell');
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-mocha-phantomjs');
+    grunt.loadNpmTasks('grunt-mocha-appium');
+    this.registerTask('test', [/*'bgShell',*/'jshint','connect', 'mocha_phantomjs', 'mochaAppium']);
+};
+
+
+Now that the Gruntfile and package.json anre correctly set up, it is time to run npm install from the root of the project
+
+
+The nmp install will install the necessary packages. Sometimes npm hangs and you need to manually install or upgrade some
+of the dependencies, but that is simple enough.
+
+Now we have a new folder in the root of the project which is called node_modules. DO NOT push this folder to git. Setting a new computer 
+is simple enought with the npm install command
+
+
+THE test setup is now lacking only the actual tests and the features to be tested. In the gruntfile I defined the tests to be found from  the spec folder in the
+root of the project. So lets create the first test.
+
+
+The feature that I want to implement for this project is a simple email input field and a send button that will verify the email-address
+before sending it to the imaginary server. First test I'm going to write is verification of different kinds of email input to make sure that
+the checkup function is working.
+
+copy paste the test for the email in here
+
+Now that we have the tests that should fail and pass we can move on to implementing the feature itself. THis part of the 
+testing process does now differ any from the normal testing process for any website. THe only slight difference is that we 
+might be running the tests against an emulator or an actual android device, depending what is plugged in or configured ito the 
+grutfile. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
