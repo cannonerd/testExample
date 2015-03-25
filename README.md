@@ -65,30 +65,16 @@ PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
 3) run this sudo apt-get install openjdk-6-jdk or better this sudo apt-get install openjdk-7-jdk
 
-4) Download SDK platform tools from here http://developer.android.com/sdk/index.html
-
-5) Unzip downloaded file "adt-bundle-linux-x86_64-20131030.zip" (you can have a little bit different name ;). But you should get folder contained two sub folder - sdk and eclipse
-
-6) Run this nautilus ~
-
-7) In opened window create folder 'android-sdk-linux'
-
-8) copy the all entire contents of folder sdk (from unzipped archive) to this new folder 'android-sdk-linux'
+4) Download SDK platform tools from here http://developer.android.com/sdk/index.html and extract
 
 9) try run this cd ~/android-sdk-linux/tools then this ./android. If you did all right you should see Android SDK Manager
 
 10) run this sudo gedit ~/.bashrc in opened editor add this in very top
 
 #AndroidDev PATH
-export PATH=${PATH}:~/android-sdk-linux/tools
-export PATH=${PATH}:~/android-sdk-linux/platform-tools
-11) save and close
 
-12) run exec bash then try run android
-
-13) give write permissions to android-sdk-linux folder
-
-Enjoy! ;)
+export ANDROID_HOME=[path to your extracted android sdk]android-sdk-linux
+PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
 
 
