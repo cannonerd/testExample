@@ -47,15 +47,55 @@ Later in the project we will add few other dependencies for the project.
 
 
 
-To be able to run the tests against a virtual device, Android SDK is necessary. First download the androidSDK and then  correct the paths
+To be able to run the tests against a virtual device, Android SDK is necessary. First download the androidSDK and then  correct the paths. Make sure to have java on your system
+Android won't work without.
 
 
 open bashrc with your favourite editor
 gedit ~/.bashrc
 
 
-export ANDROID_HOME=/home/cannonerd/LibrariesForLinux/android-sdk-linux
+export ANDROID_HOME=[path to your extracted android sdk]android-sdk-linux
 PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+
+1) Check in System Settings -> Details, whether your Ubuntu is 32-bit or 64-bit
+
+2) If your Ubuntu is a 32-bit OS then run this sudo apt-get install libgl1-mesa-dev In case of 64-bit OS run this sudo apt-get install ia32-libs
+
+3) run this sudo apt-get install openjdk-6-jdk or better this sudo apt-get install openjdk-7-jdk
+
+4) Download SDK platform tools from here http://developer.android.com/sdk/index.html
+
+5) Unzip downloaded file "adt-bundle-linux-x86_64-20131030.zip" (you can have a little bit different name ;). But you should get folder contained two sub folder - sdk and eclipse
+
+6) Run this nautilus ~
+
+7) In opened window create folder 'android-sdk-linux'
+
+8) copy the all entire contents of folder sdk (from unzipped archive) to this new folder 'android-sdk-linux'
+
+9) try run this cd ~/android-sdk-linux/tools then this ./android. If you did all right you should see Android SDK Manager
+
+10) run this sudo gedit ~/.bashrc in opened editor add this in very top
+
+#AndroidDev PATH
+export PATH=${PATH}:~/android-sdk-linux/tools
+export PATH=${PATH}:~/android-sdk-linux/platform-tools
+11) save and close
+
+12) run exec bash then try run android
+
+13) give write permissions to android-sdk-linux folder
+
+Enjoy! ;)
+
+
+
+
+
+
+
 
 
 
