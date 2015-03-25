@@ -53,7 +53,8 @@ Android won't work without.
 
 open bashrc with your favourite editor
 gedit ~/.bashrc
-
+#JAVA_HOME
+export JAVA_HOME=/home/cannonerd/LibrariesForLinux/jdk1.8.0_31
 
 export ANDROID_HOME=[path to your extracted android sdk]android-sdk-linux
 PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
