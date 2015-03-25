@@ -47,4 +47,18 @@ Later in the project we will add few other dependencies for the project.
 
 
 
+To be able to run the tests against a virtual device, Android SDK is necessary. First download the androidSDK and then  correct the paths
+
+
+open bashrc with your favourite editor
+gedit ~/.bashrc
+
+
+export ANDROID_HOME=/home/cannonerd/LibrariesForLinux/android-sdk-linux
+PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+
+
+
+
 
