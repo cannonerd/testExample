@@ -78,6 +78,26 @@ PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
 
 
+when you have installed all the necessary android sDKk parts it is time to create the emulator.
+
+./android list targets
+will give you a list of possible android targets.
+
+
+To create an android virtual emulator (create once use later with the name)
+example:
+android create avd -n kitkat -t 6
+
+spec:
+android create avd n <name> -t <targetID> [<option> <value>]
+
+Start emulator (will be done from GruntFile):
+(for gruntfile we need a list of names of the emulators we run [naming convention: official release names matching API level])
+
+emulator -avd kitkat -no-skin -no-audio -no-window
+
+
+
 
 
 
