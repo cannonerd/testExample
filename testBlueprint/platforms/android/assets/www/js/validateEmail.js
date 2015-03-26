@@ -1,4 +1,0 @@
-function validateEmail(){
-
-    return null;
-};
