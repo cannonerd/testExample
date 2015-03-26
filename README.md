@@ -134,18 +134,81 @@ plugins
 www
 ~~~
 
-Now we have a new folder in the root of the project which is called node_modules. DO NOT push this folder to git. Setting a new computer is simple enough with the npm install command. So adding a gitignore before pushing might be a good idea.
+Now we have a new folder in the root of the project which is called node_modules. DO NOT push this folder to git. Setting up a new instance of the project is simple enough with the npm install command. So adding a gitignore before pushing the changes to git might be a good idea.
 
 
-The test setup is now lacking only the actual tests and the features to be tested. In the Gruntfile I defined the tests to be found from  the spec folder in the root of the project. So lets create the first test.
+The test setup is now lacking only the actual tests and the features to be tested. In the Gruntfile we defined the tests to be found from  the spec folder in the root of the project. So lets create the spec folder and the first test.
 
 
-The feature that I want to implement for this project is a simple email input field and a send button that will verify the mail-address before sending it to the imaginary server. First test I'm going to write is verification of different kinds of email input to make sure that the checkup function is working.
+The feature that I want to implement for this project is a simple email input field and a send button that will verify the mail-address before sending it to the imaginary server. First test I'm going to write is verification of different kinds of email input to make sure that the checkup function is working. And as a counterpart for the test I will write the function to be tested. For the first run the function returns null. Check the example project for more details
 
-[link to the test file]
+~~~
+describe("Validate email Address", function(){
 
-Now that we have the tests that should fail and pass we can move on to implementing the feature itself. THis part of the  testing process does now differ any from the normal testing process for any website. THe only slight difference is that we
-might be running the tests against an emulator or an actual android device, depending what is plugged in or configured ito the grutfile.
+    it("expecting TRUE: good email to be good ", function(done){
+        var mail = "mail@mail.com";
+        var CB = function (err, res) {
+            setTimeout(function(){
+                console.log(res);
+                chai.expect(res).to.equal(true);
+                done();
+            }, 500);
+        };
+        this.browser.safeExecute("validateEmail(arguments[0])", [mail],  CB);
+    });
+
+
+ });
+~~~
+
+
+at this point we can run the tests for the first time. Just simply type in grunt test as defined in the script section of the Gruntfile. And as there is just the function defined, the tests should fail.
+
+
+~~~
+$ grunt test
+
+
+Running "bgShell:command" (bgShell) task
+
+Running "jshint:all" (jshint) task
+>> 2 files lint free.
+
+Running "mochaAppium:android" (mochaAppium) task
+Starting Appium with args: --port 42009
+Appium Running
+
+Driving the web on session: 8ae936af-5e8c-4cdc-90fb-6df53711d88e
+
+
+
+  Validate email Address
+undefined
+    1) expecting TRUE: good email to be good
+undefined
+    2) expecting TRUE: good email to be good
+undefined
+    3) expecting TRUE:  special characters to pass
+undefined
+    4) expecting TRUE:  different end to pass
+undefined
+    5) expecting FALSE:  email with no @ to fail
+undefined
+    6) expecting FALSE: email with no .something to fail
+undefined
+    7) expecting FALSE: space in email to fail
+
+
+  0 passing (4s)
+  7 failing
+
+
+~~~
+
+
+
+Now that we have the tests that should fail and pass we can move on to implementing the feature itself. This part of the  testing process does now differ any from the normal testing process for any website. The only slight difference is that we
+might be running the tests against an emulator or an actual android device, depending what is plugged in or configured ito the Gruntfile.
 
 Before we can actually run the test should build the application. Now that the
 
