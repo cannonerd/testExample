@@ -6,7 +6,7 @@ The reasoning why to do tests is clear for all. How to implement tests is comple
 
 When we add the Cordova in to the mix, we need to add a testing framework to handle that, in this case I chose [Appium] (http://appium.io/). There is near to no documentation in testing Cordova applications, which leads me to wonder weather or not the hybrid apps are being tested at all.
 
-For a versatile and as fully automated test environment, I'm using Grunt [http://gruntjs.com/] as my foundation. Grunt is a JavaScript task runner. With the help of Grunt I can easily handle all the different kind of test scenarios I will encounter. From testing locally for just one feature, or setting up a full windowless server and running all the tests by kicking up a bunch or Emulators or plugging in  a real device to the server you just happen to runt underneath your desk.
+For a versatile and as fully automated test environment, I'm using [Grunt] (http://gruntjs.com/) as my foundation. Grunt is a JavaScript task runner. With the help of Grunt I can easily handle all the different kind of test scenarios I will encounter. From testing locally for just one feature, or setting up a full windowless server and running all the tests by kicking up a bunch or Emulators or plugging in  a real device to the server you just happen to runt underneath your desk.
 
 But enough of the background and into practice. In this blog post I will create a small Cordova application running on Android to give you a view on setting up an fully tested app.
 
@@ -32,26 +32,10 @@ www
 ~~~
 
 
-Package.jsonn and Gruntfile.js
+Package.json and Gruntfile.js
 ------------
 
-Add the package.json and Gruntfile.js to the root of the project.
-
-After the package.json has been created to have the project name, developer and devdependencies it is time to install the minimum
-amount of dependencies we need, in our case that being 
-
-~~~
-
-  "devDependencies": {
-    "chai": "^2.0.0",
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.11.0",
-    "grunt-mocha-phantomjs": "^0.6.0",
-    "grunt-mocha-appium": "^0.4.0"
-  }
-~~~
-  
-  so the full package.json should look something like this
+Add the [package.json](https://docs.npmjs.com/files/package.json) and Gruntfile.js to the root of the project. In the package.json we define the name, version, dependencies and scripts that define our project.
 
 ~~~
 {
@@ -77,34 +61,30 @@ amount of dependencies we need, in our case that being
 
 
 
-
-in the scripts section the run command for the tests is defined. For future implementations this can be what Travis or TeamCity will use.
-
-
-now over to the Gruntfile.js.  As first, we need to form a link between the Gruntfile and the package.json then we need to tell the jshint, where the javascript files for this project are found.
-
-
-With appium we get a bit trickier setup. And the Appium documentation does not actually help at this point. 
-
-the firs batch of setting up the Appium is the options
+Now over to the Gruntfile.js.  As first, we need to form a link between the Gruntfile and the package.json. Jshint, also needs a path too find reason to whine about form.
 
 ~~~
-    // Mocha options
-                reporter: 'spec',
-                timeout: 6000,
-                // Toggles wd's promises API, default:false
-                usePromises: true,
-                useChaining: true
-            },
+pkg: grunt.file.readJSON('package.json'),
+jshint: { all: ['src/*.js'] },
+~~~
+
+With Appium we get a bit trickier setup. And the Appium documentation does not actually help at this point.
+
+The firs batch of setting up the Appium is the options
+
+~~~
+// Mocha options
+    reporter: 'spec',
+    timeout: 6000,
+    // Toggles wd's promises API, default:false
+    usePromises: true,
+    useChaining: true
+},
 ~~~
             
-the timeout is the general set timeout for things to timeout sou you would not get stuck into a faulty test forever.
-The problem being thought that the timeout can be later set to various lengths. THe timeouts in Appium tests work in 3 different onion like 
-layers, so keeping track of which timeout is applied to your different tests at different points is important. HERE BE more of the different 
-timeout layers. The uses promising feature of Appium I haven't got working yet to my complete puzzlement, so just leave it there and wait
-for an update for this blogpost when I have figured it out.
+The timeout is set to prevent the tests running forever. The thing to know, is that this general timeout can be overwritten in the tests. The timeouts in Appium tests work in 3 different layers, so keeping track of which timeout is applied is important. The usePromises feature of Appium I haven't got working yet to my complete puzzlement, so just leave it there and wait for an update to this blogpost when I have figured it out.
 
-the next steps are the platform dependent settins. So iOs would be added in the same manner as Android
+The next steps are the platform dependent settings. So iOs would be added in the same manner as Android.
 
 ~~~
 android: {
@@ -121,89 +101,6 @@ android: {
             }
 ~~~
 
-so the important parts are the scr, where your tests are and in the app, the location for the actual application built by cordova build
-android. So the full Gruntfile would look something like this.
-
-
-~~~
-module.exports = function(grunt) {
-
-    // Project configuration.
-    grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
-        jshint: { all: ['src/*.js'] },
-        mocha_phantomjs: {
-            options: {
-                'reporter': 'spec',
-                'output': 'tests/results/result.xml',
-                urls: [
-                    'http://localhost:8000/spec/runner.html'
-                ]
-            },
-            all:{
-                options:{
-                    urls: ['http://localhost:8000/spec/runner.html']}}
-        },
-        connect: {
-            server: {
-                options: {
-                    port: 8000,
-                    base: '.'
-                }
-            }
-        },
-        mochaAppium: {
-            options: {
-                // Mocha options
-                reporter: 'spec',
-                timeout: 6000,
-                // Toggles wd's promises API, default:false
-                usePromises: true,
-                useChaining: true
-            },
-            android: {
-                src: ['spec/test.*.js'],
-                options: {
-                    deviceName: "Android",
-                    //browserName: "selendroid",
-                    //automationName: "selendroid",
-                    platformName: "android",
-                    platformVersion: "19",
-                    //aut: "com.mcrm.eydevmcrm:1.0.0",
-                    app: __dirname + "/platforms/android/ant-build/CordovaApp-debug.apk",
-                    //aut: "com.htc.club:1.7.2",
-                    host: "localhost",
-                    emulator: true,
-                    port: 4444
-                }
-            }
-        }/*  ,
-      bgShell: {
-            command: {
-                bg: true,
-                execOpts: {
-                    maxBuffer: false
-                },
-                cmd: 'emulator -avd kitkat'
-            }
-        }*/
-    });
-
-    //open emulator before doing any tests
-    //emulator -avd kitkat -no-skin -no-audio -no-window
-
-
-//make sure that all the necessary tasks are also defined in
-//the dependencies in package.json
-    //grunt.loadNpmTasks('grunt-shell');
-    grunt.loadNpmTasks('grunt-bg-shell');
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-mocha-phantomjs');
-    grunt.loadNpmTasks('grunt-mocha-appium');
-    this.registerTask('test', [/*'bgShell',*/'jshint','connect', 'mocha_phantomjs', 'mochaAppium']);
-};
-~~~
 
 The root now looks like this:
 
@@ -219,6 +116,9 @@ www
 
 Now that the Gruntfile and [package.json](https://docs.npmjs.com/files/package.json) are correctly set up, it is time to run npm install from the root of the project.
 
+~~~
+$ npm install
+~~~
 
 The nmp install will install the necessary packages in the node_modules folder it creates
 
