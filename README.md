@@ -2,11 +2,9 @@ Testing in hybrid mobile projects with Cordova and Appium
 ============
 
 
-The reasoning why to do tests is clear for all. How to implement tests is completely other matter. For typical websites there are many different options. One of the popular frameworks being [Mocha] (http://mochajs.org/) with the help of the asstertion library [Chai] (http://chaijs.com/). For native applications both for Android and iOs different frameworks can also be found. When a project is a combination in of native and web, things get a little bit tricky. If the project uses the capabilities of Cordova to full extent, the testing seases to be simple. The purely JavaScript side of the project can be easily tested and there are a number of good blogposts around that topic.
+The reasoning why to do tests is clear for all. How to implement tests is a completely other matter. For typical websites there are many different options. One of the popular frameworks being [Mocha] (http://mochajs.org/) with the help of the asstertion library [Chai] (http://chaijs.com/). For native applications both for Android and iOs different frameworks can also be found. When a project is a hybrid app, things get a little bit tricky. Trying to ease out the trickiness we have a test automation framework [Appium] (http://appium.io/) .
 
-When we add the Cordova in to the mix, we need to add a testing framework to handle that, in this case I chose [Appium] (http://appium.io/). There is near to no documentation in testing Cordova applications, which leads me to wonder weather or not the hybrid apps are being tested at all.
-
-For a versatile and as fully automated test environment, I'm using [Grunt] (http://gruntjs.com/) as my foundation. Grunt is a JavaScript task runner. With the help of Grunt I can easily handle all the different kind of test scenarios I will encounter. From testing locally for just one feature, or setting up a full windowless server and running all the tests by kicking up a bunch or Emulators or plugging in  a real device to the server you just happen to runt underneath your desk.
+For a versatile and as fully automated test environment, I'm using [Grunt] (http://gruntjs.com/) as my foundation. Grunt is a JavaScript task runner. With the help of Grunt I can easily handle all the different kind of test scenarios I will encounter. From testing locally for just one feature, or setting up a full windowless server and running all the tests by kicking up a bunch or Emulators or plugging in  a real device to the server you just happen to run underneath your desk.
 
 But enough of the background and into practice. In this blog post I will create a small Cordova application running on Android to give you a view on setting up an fully tested app.
 
