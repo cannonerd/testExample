@@ -27,7 +27,7 @@ module.exports = function(grunt) {
                 }
             }
         }  ,
-      bgShell: {
+        bgShell: {
             command: {
                 bg: true,
                 execOpts: {

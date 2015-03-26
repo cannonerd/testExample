@@ -42,14 +42,14 @@ Add the [package.json](https://docs.npmjs.com/files/package.json) and Gruntfile.
   "name": "Blueprint",
   "version": "0.1.0",
   "description": "tests",
- "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "chai": "^2.0.0",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.0",
-    "grunt-mocha-appium": "^0.4.0"
+    "grunt-bg-shell": "^2.3.1",
+    "grunt-mocha-appium": "^0.4.0",
+    "json-stringify-safe": "^5.0.0"
   },
   "scripts": {
     "test": "grunt test"
@@ -57,6 +57,7 @@ Add the [package.json](https://docs.npmjs.com/files/package.json) and Gruntfile.
   "author": "Susanna Huhtanen, Basilicom gmbh",
   "license": "MIT"
 }
+
 ~~~
 
 
@@ -101,6 +102,21 @@ android: {
             }
 ~~~
 
+
+For automated starting of the emulator, I use the [bgShell](https://github.com/rma4ok/grunt-bg-shell) from Kiryl Yermakou.
+
+
+~~~
+  bgShell: {
+            command: {
+                bg: true,
+                execOpts: {
+                    maxBuffer: false
+                },
+                cmd: 'emulator -avd kitkat'
+            }
+        }
+~~~
 
 The root now looks like this:
 
@@ -167,8 +183,6 @@ at this point we can run the tests for the first time. Just simply type in grunt
 
 ~~~
 $ grunt test
-
-
 Running "bgShell:command" (bgShell) task
 
 Running "jshint:all" (jshint) task
