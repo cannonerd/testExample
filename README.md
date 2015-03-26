@@ -4,7 +4,7 @@ Testing in hybrid mobile projects with Cordova and Appium
 
 The reasoning why to do tests is clear for all. How to implement tests is a completely other matter. For typical websites there are many different options. One of the popular frameworks being [Mocha] (http://mochajs.org/) with the help of the asstertion library [Chai] (http://chaijs.com/). For native applications both for Android and iOs different frameworks can also be found. When a project is a hybrid app, things get a little bit tricky. Trying to ease out the trickiness we have a test automation framework [Appium] (http://appium.io/) .
 
-For a versatile and as fully automated test environment, I'm using [Grunt] (http://gruntjs.com/) as my foundation. Grunt is a JavaScript task runner. With the help of Grunt I can easily handle all the different kind of test scenarios I will encounter. From testing locally for just one feature, or setting up a full windowless server and running all the tests by kicking up a bunch or Emulators or plugging in  a real device to the server you just happen to run underneath your desk.
+I'm using [Grunt] (http://gruntjs.com/) as my foundation. Grunt is a JavaScript task runner. With the help of Grunt I can easily handle all the different kind of test scenarios I will encounter. From testing locally for just one feature, or setting up a full windowless server and running all the tests by kicking up a bunch or Emulators or plugging in a real device to the server you just happen to run underneath your desk.
 
 But enough of the background and into practice. In this blog post I will create a small Cordova application running on Android to give you a view on setting up an fully tested app.
 
@@ -60,19 +60,19 @@ Add the [package.json](https://docs.npmjs.com/files/package.json) and Gruntfile.
 
 
 
-Now over to the Gruntfile.js.  As first, we need to form a link between the Gruntfile and the package.json. Jshint, also needs a path too find reason to whine about form.
+Now over to the Gruntfile.js.  As first, we need to form a link between the Gruntfile and the package.json. Jshint, also needs a path too find some reason to whine about form.
 
 ~~~
 pkg: grunt.file.readJSON('package.json'),
 jshint: { all: ['src/*.js'] },
 ~~~
 
-With Appium we get a bit trickier setup. And the Appium documentation does not actually help at this point.
+With Appium we have a bit trickier setup, and the Appium documentation does not actually help at this point that much.
 
-The firs batch of setting up the Appium is the options
+The first things to setu up in Appium are the options
 
 ~~~
-// Mocha options
+// Mocha-appium options
     reporter: 'spec',
     timeout: 6000,
     // Toggles wd's promises API, default:false
@@ -81,9 +81,9 @@ The firs batch of setting up the Appium is the options
 },
 ~~~
             
-The timeout is set to prevent the tests running forever. The thing to know, is that this general timeout can be overwritten in the tests. The timeouts in Appium tests work in 3 different layers, so keeping track of which timeout is applied is important. The usePromises feature of Appium I haven't got working yet to my complete puzzlement, so just leave it there and wait for an update to this blogpost when I have figured it out.
+The timeout is set to prevent the tests running forever. The thing to know, is that this general timeout can be overwritten in the tests. The timeouts in Appium work in 3 different layers, so keeping track of which timeout is applied is important. The usePromises feature of Appium I haven't got working yet to my complete puzzlement, so just leave it there and wait for an update to this blogpost when I have figured it out.
 
-The next steps are the platform dependent settings. So iOs would be added in the same manner as Android.
+The next steps are the platform dependent settings. iOs would be added in the same manner as Android.
 
 ~~~
 android: {
@@ -134,7 +134,7 @@ Now that the Gruntfile and [package.json](https://docs.npmjs.com/files/package.j
 $ npm install
 ~~~
 
-The nmp install will install the necessary packages in the node_modules folder it creates
+The nmp install will install the necessary packages in the node_modules folder it creates.
 
 ~~~
 config.xml
@@ -148,14 +148,13 @@ plugins
 www
 ~~~
 
-Now we have a new folder in the root of the project which is called node_modules. DO NOT push this folder to git. Setting up a new instance of the project is simple enough with the npm install command. So adding a gitignore before pushing the changes to git might be a good idea.
+Now we have a new folder in the root of the project which is called node_modules. DO NOT push this folder to git. Setting up a new instance of the project is simple enough with the npm install command. Adding a gitignore before pushing the changes to git might be a good idea.
 
 
-The test setup is now lacking only the actual tests and the features to be tested. In the Gruntfile we defined the tests to be found from  the spec folder in the root of the project. So lets create the spec folder and the first test.
+The test setup is now lacking only the actual tests and the features to be tested. In the Gruntfile we defined the tests to be found from the spec folder in the root of the project. So lets create the spec folder and the first test.
 
 
 The feature that I want to implement for this project is a simple email input field and a send button that will verify the mail-address before sending it to the imaginary server. First test I'm going to write is verification of different kinds of email input to make sure that the checkup function is working. And as a counterpart for the test I will write the function to be tested. For the first run the function returns null. Check the example project for more details.
-
 
 ~~~
 describe("Validate email Address", function(){
