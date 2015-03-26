@@ -156,7 +156,8 @@ Now we have a new folder in the root of the project which is called node_modules
 The test setup is now lacking only the actual tests and the features to be tested. In the Gruntfile we defined the tests to be found from  the spec folder in the root of the project. So lets create the spec folder and the first test.
 
 
-The feature that I want to implement for this project is a simple email input field and a send button that will verify the mail-address before sending it to the imaginary server. First test I'm going to write is verification of different kinds of email input to make sure that the checkup function is working. And as a counterpart for the test I will write the function to be tested. For the first run the function returns null. Check the example project for more details
+The feature that I want to implement for this project is a simple email input field and a send button that will verify the mail-address before sending it to the imaginary server. First test I'm going to write is verification of different kinds of email input to make sure that the checkup function is working. And as a counterpart for the test I will write the function to be tested. For the first run the function returns null. Check the example project for more details.
+
 
 ~~~
 describe("Validate email Address", function(){
@@ -220,15 +221,12 @@ undefined
 ~~~
 
 
-
-Now that we have the tests that should fail and pass we can move on to implementing the feature itself. This part of the  testing process does now differ any from the normal testing process for any website. The only slight difference is that we
-might be running the tests against an emulator or an actual android device, depending what is plugged in or configured ito the Gruntfile.
-
-Before we can actually run the test should build the application. Now that the
+Now we have a fully working test setup with a bunch of failing tests and the buildup for a fully tested application can begin.
 
 
 
-
+The full list of commands for testing can be found in the documentation of [node.js Webdriver client WD](https://github.com/admc/wd/blob/f49065fa8ff91411f70972f149e90b7f97f4cd39/lib/commands.js) and
+[the ui interaction docs](https://github.com/admc/wd/blob/1038c33b0abbe8329d81c9bb6bb62e3df3b440fa/doc/api.md)
 
 
 
