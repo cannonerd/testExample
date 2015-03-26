@@ -1,0 +1,19 @@
+{
+  "name": "Blueprint",
+  "version": "0.1.0",
+  "description": "tests",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^2.0.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-bg-shell": "^2.3.1",
+    "grunt-mocha-appium": "^0.4.0",
+    "json-stringify-safe": "^5.0.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "author": "Susanna Huhtanen, Basilicom gmbh",
+  "license": "MIT"
+}
