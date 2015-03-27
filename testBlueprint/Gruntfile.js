@@ -26,7 +26,7 @@ module.exports = function(grunt) {
                     port: 4444
                 }
             }
-        } /* ,
+        }  ,
         bgShell: {
             command: {
                 bg: true,
@@ -35,7 +35,7 @@ module.exports = function(grunt) {
                 },
                 cmd: 'emulator -avd kitkat'
             }
-        }*/
+        }
     });
 
     //open emulator before doing any tests
@@ -47,6 +47,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-bg-shell');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-mocha-appium');
-    this.registerTask('test', [/*'bgShell',*/'jshint', 'mochaAppium']);
+    this.registerTask('test', ['bgShell','jshint', 'mochaAppium']);
 };
 

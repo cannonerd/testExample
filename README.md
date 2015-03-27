@@ -129,7 +129,7 @@ www
 ~~~
 
 Now that the Gruntfile and [package.json](https://docs.npmjs.com/files/package.json) are correctly set up, it is time to run npm install from the root of the project.
-Appium also needs to be installed separately as global library. Be sure to install . error: Appium will not work if used or installed with sudo. Please rerun/install as a non-root user. If you had to install Appium using `sudo npm install -g appium`, the solution is to reinstall Node using a method (Homebrew, for example) that doesn't require sudo to install global npm packages.
+Appium also needs to be installed separately as global library. Be sure to install . error: Appium will not work if used or installed with sudo. Please rerun/install as a non-root user. If you had to install Appium using `sudo npm install -g appium`, the solution is to reinstall Node using a method (Homebrew, for example) that doesn't require sudo to install global npm packages. https://docs.npmjs.com/getting-started/fixing-npm-permissions
 
 
 ~~~
