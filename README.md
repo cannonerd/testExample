@@ -129,6 +129,11 @@ www
 ~~~
 
 Now that the Gruntfile and [package.json](https://docs.npmjs.com/files/package.json) are correctly set up, it is time to run npm install from the root of the project.
+Appium also needs to be installed separately as global library. Be sure to install .
+
+~~~
+ npm install appium -g
+~~~
 
 ~~~
 $ npm install
