@@ -100,7 +100,7 @@ android: {
             }
 ~~~
 
-
+Make sure that the path to the built apk is correct.
 For automated starting of the emulator, I use the [bgShell](https://github.com/rma4ok/grunt-bg-shell) from Kiryl Yermakou.
 
 
