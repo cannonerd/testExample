@@ -14,7 +14,7 @@ Creating a Cordova project
 So first we need to create a [Cordova application] (https://cordova.apache.org/docs/en/4.0.0/guide_cli_index.md.html).
 
 ~~~
-$  cordova create testBlueprint com.basilicom.blueprint testBlueprint
+$ cordova create testBlueprint com.basilicom.blueprint testBlueprint
 $ cd testBlueprint/
 $ cordova platform add android
 ~~~
@@ -52,7 +52,7 @@ Add the [package.json](https://docs.npmjs.com/files/package.json) and Gruntfile.
   "scripts": {
     "test": "grunt test"
   },
-  "author": "Susanna Huhtanen, Basilicom gmbh",
+  "author": "Susanna Huhtanen, basilicom GmbH",
   "license": "MIT"
 }
 
@@ -133,7 +133,7 @@ Appium also needs to be installed separately as global library. Be sure to insta
 
 
 ~~~
- npm install appium -g
+$ npm install appium -g
 ~~~
 
 ~~~
